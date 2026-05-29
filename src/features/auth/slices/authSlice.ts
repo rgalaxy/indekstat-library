@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import type { AuthState, LoginRequest } from "../types";
 import { loginApi } from "../api/authApi";
 
@@ -17,6 +18,12 @@ export const login = createAsyncThunk(
       const response = await loginApi(credentials);
       return response.data;
     } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const message =
+          (err.response?.data as { msg?: string } | undefined)?.msg ??
+          err.message;
+        return rejectWithValue(message);
+      }
       if (err instanceof Error) return rejectWithValue(err.message);
       return rejectWithValue("Login gagal. Coba lagi ya!");
     }

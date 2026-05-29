@@ -1,4 +1,4 @@
-export const API_BASE_URL = "/api";
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
 export const AUTH_COOKIE_NAME = "lib_rt";
 export const CSRF_HEADER_NAME = "X-CSRF-Token";
